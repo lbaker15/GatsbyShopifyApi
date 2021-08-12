@@ -7,11 +7,9 @@ import { Seo } from "./seo"
 export function Layout({ children }) {
   return (
     <div>
-      <Seo />
-      <SkipNavLink />
-      <Header />
+
       <SkipNavContent>{children}</SkipNavContent>
-      <Footer />
+
     </div>
   )
 }

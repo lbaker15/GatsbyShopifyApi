@@ -2,10 +2,11 @@ import * as React from "react"
 import fetch from "isomorphic-fetch"
 import Client from "shopify-buy"
 
+//THIS IS THE FILE THAT COULD NOT ACCESS .ENV
 const client = Client.buildClient(
   {
-    domain: process.env.GATSBY_SHOPIFY_STORE_URL,
-    storefrontAccessToken: process.env.GATSBY_STOREFRONT_ACCESS_TOKEN,
+    domain: 'naturdo.myshopify.com',
+    storefrontAccessToken: 'f260cfece506236b22fffa47c4172d51'
   },
   fetch
 )

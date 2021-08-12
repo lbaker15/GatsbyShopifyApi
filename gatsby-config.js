@@ -1,4 +1,6 @@
-require("dotenv").config()
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 
 module.exports = {
   siteMetadata: {
@@ -15,12 +17,16 @@ module.exports = {
     FAST_DEV: true,
   },
   plugins: [
+    `glsl-canvas-js`,
+    `gsap`,
     {
       resolve: "gatsby-source-shopify",
       options: {
-        password: process.env.SHOPIFY_SHOP_PASSWORD,
-        storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
-        shopifyConnections: ["collections"],
+        password: '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',
+        storeUrl: 'naturdo.myshopify.com',
+        accessToken: 'f260cfece506236b22fffa47c4172d51',
+        shopifyConnections: ["collections", "orders"],
+        fetchCollections: [`ARTICLES`, `BLOGS`, `PRODUCTS`]
       },
     },
     "gatsby-plugin-image",
@@ -31,11 +37,11 @@ module.exports = {
     "gatsby-plugin-gatsby-cloud",
     // Add your Google Analytics ID to the .env file to enable
     // Otherwise, this plugin can be removed
-    process.env.GOOGLE_ANALYTICS_ID && {
-      resolve: "gatsby-plugin-google-analytics",
-      options: {
-        trackingId: process.env.GOOGLE_ANALYTICS_ID,
-      },
-    },
+    // process.env.GOOGLE_ANALYTICS_ID && {
+    //   resolve: "gatsby-plugin-google-analytics",
+    //   options: {
+    //     trackingId: process.env.GOOGLE_ANALYTICS_ID,
+    //   },
+    // },
   ].filter(Boolean),
 }
