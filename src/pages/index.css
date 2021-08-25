@@ -1,0 +1,56 @@
+.header {
+    position: fixed; top: 0;
+    left: 0;
+    background: white;
+    width: 100vw; 
+    height: 100px;
+    z-index: 9000;
+
+}
+.cartBtn img {
+    width: 50px;
+}
+.cartBtn {
+    width: 100px;
+    height: 100%;
+    float: right;
+}
+#cartSection {
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+}
+.products {
+    margin-top: 150px;
+}
+.add {
+    margin-top: 20px;
+    display: flex; justify-content: center;
+    gap: 10px;
+}
+.col {
+    display: flex; justify-content: center; align-items: center;
+}
+.numberInput {
+    border: 1px solid grey;
+    width: 40px; height: 40px;
+    text-align: center;
+    margin-top: 0px;
+    border-radius: 2px;
+}
+.changeInput {
+    padding: 10px;
+    border: 1px solid grey;
+    display: flex; justify-content: center;
+    align-items: center;
+    font-family: Manrope;
+}
+.medium {
+    width: 40px; height: 40px;
+}
+.small {
+    width: 35px; height: 40px; background: black; 
+    color: white;
+    border: none; border-radius: 2px;
+    font-size: 24px; font-weight: 200;
+}

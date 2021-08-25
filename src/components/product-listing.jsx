@@ -6,9 +6,12 @@ import { listingContainerStyle } from "./product-listing.module.css"
 export function ProductListing({ products = [] }) {
   return (
     <div className={listingContainerStyle}>
-      {products.map((p, index) => (
-        <ProductCard product={p} key={p.id} eager={index === 0} />
-      ))}
+      {products.map((p, index) => {
+        console.log(p.node.status)
+        if (p.node.status === "ACTIVE") {
+          return <ProductCard product={p.node} key={p.id} eager={index === 0} />
+        }
+      })}
     </div>
   )
 }

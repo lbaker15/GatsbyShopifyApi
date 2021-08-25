@@ -24,14 +24,13 @@ import {
 export default function CartPage() {
   const { checkout, loading } = React.useContext(StoreContext)
   const emptyCart = checkout.lineItems.length === 0
-
+  console.log('checkout', checkout)
   const handleCheckout = () => {
     window.open(checkout.webUrl)
   }
-
   return (
     <Layout>
-      <div className={wrap}>
+      <div id="cartSection" className={wrap}>
         {emptyCart ? (
           <div className={emptyStateContainer}>
             <h1 className={emptyStateHeading}>Your cart is empty</h1>

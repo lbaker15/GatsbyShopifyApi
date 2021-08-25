@@ -1,8 +1,9 @@
-import * as React from "react"
-import { graphql, Link } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
-import { getShopifyImage } from "gatsby-source-shopify"
-import { formatPrice } from "../utils/format-price"
+import React, {useState} from "react";
+import { graphql, Link } from "gatsby";
+import { StoreContext } from "../context/store-context";
+import { GatsbyImage } from "gatsby-plugin-image";
+import { getShopifyImage } from "gatsby-source-shopify";
+import { formatPrice } from "../utils/format-price";
 import {
   productCardStyle,
   productHeadingStyle,
@@ -13,51 +14,37 @@ import {
 } from "./product-card.module.css"
 
 export function ProductCard({ product, eager }) {
+  const [count, setCount] = useState(1)
+  const { addVariantToCart, loading } = React.useContext(StoreContext)
+  function addToCart(e, variantId, quantity) {
+    quantity = count; 
+    e.preventDefault()
+    addVariantToCart(variantId, quantity)
+  }
+  const images = [product.featuredImage];
   const {
     title,
     priceRangeV2,
-    slug,
-    images: [firstImage],
+    id,
+    shopifyId,
     vendor,
-    storefrontImages,
-  } = product
-
+  } = product;
   const price = formatPrice(
-    priceRangeV2.minVariantPrice.currencyCode,
+    'GBP',
     priceRangeV2.minVariantPrice.amount
   )
-
   const defaultImageHeight = 200
   const defaultImageWidth = 200
-  let storefrontImageData = {}
-  if (storefrontImages) {
-    const storefrontImage = storefrontImages.edges[0].node
-    try {
-      storefrontImageData = getShopifyImage({
-        image: storefrontImage,
-        layout: "fixed",
-        width: defaultImageWidth,
-        height: defaultImageHeight,
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const hasImage = firstImage || Object.getOwnPropertyNames(storefrontImageData || {}).length
-
+  let hasImage = true;
+  console.log(count)
   return (
-    <Link
-      className={productCardStyle}
-      to={slug}
-      aria-label={`View ${title} product page`}
-    >
+    <React.Fragment>
       {hasImage
         ? (
           <div className={productImageStyle} data-name="product-image-box">
             <GatsbyImage
-              alt={firstImage?.altText ?? title}
-              image={firstImage?.gatsbyImageData ?? storefrontImageData}
+              alt={images[0]?.altText ?? title}
+              image={images[0]?.gatsbyImageData}
               loading={eager ? "eager" : "lazy"}
             />
           </div>
@@ -71,8 +58,39 @@ export function ProductCard({ product, eager }) {
           {title}
         </h2>
         <div className={productPrice}>{price}</div>
+
+        <div className="add">
+          <div className="col">
+            <button
+            className="changeInput small"
+            onClick={(e) => {
+              if (count > 0) {
+                let newNum = count - 1;
+                setCount(newNum)
+              }
+            }}
+            >-</button>
+            <input className="numberInput medium" 
+            type="number" min="1" max="100" value={count} />
+            <button
+            className="changeInput small"
+            onClick={(e) => {
+                let newNum = count + 1;
+                setCount(newNum)
+            }}
+            >+</button>
+          </div>
+          <button
+          onClick={(e) => addToCart(e, product.variants[0].storefrontId)}
+          style={{background: 'black', color: 'white',
+          fontFamily: 'Manrope', paddingLeft: 15, paddingRight: 15,
+          paddingTop: 9, paddingBottom: 9, borderRadius: 4, marginTop: 0,
+          fontSize: 15, fontWeight: 200
+          }}
+          >Add To Cart</button>
+        </div>
       </div>
-    </Link>
+    </React.Fragment>
   )
 }
 
@@ -80,9 +98,6 @@ export const query = graphql`
   fragment ProductCard on ShopifyProduct {
     id
     title
-    slug: gatsbyPath(
-      filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
-    )
     images {
       id
       altText
