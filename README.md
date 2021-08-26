@@ -1,1 +1,1 @@
-- This is an app that uses GraphQl to query the shopify api and fetch all shopify products with the ability to add to cart.
+- This is a Gatsby app that uses GraphQl to query the shopify api and fetch all shopify products with the ability to add to cart.
